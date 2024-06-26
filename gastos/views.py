@@ -14,9 +14,7 @@ class APIListarGastos(ListAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        print(self.request.user)
         return Gasto.objects.filter(usuario=self.request.user)
-        # return Gasto.objects.filter()
 
 class APICriarGasto(CreateAPIView):
     queryset = Gasto.objects.all()
@@ -25,7 +23,6 @@ class APICriarGasto(CreateAPIView):
     serializer_class = SerializadorCadastroGasto
 
     def create(self, request, *args, **kwargs):
-        print('aaaa', self.request.user)
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save(usuario=self.request.user)
@@ -33,8 +30,8 @@ class APICriarGasto(CreateAPIView):
 
 class APIExcluirGasto(DestroyAPIView):
     queryset = Gasto.objects.all()
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     serializer_class = SerializadorGasto
 
     def destroy(self, request, *args, **kwargs):
@@ -44,8 +41,8 @@ class APIExcluirGasto(DestroyAPIView):
 
 class APIEditarGasto(UpdateAPIView):
     queryset = Gasto.objects.all()
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     serializer_class = SerializadorGasto
 
     def update(self, request, *args, **kwargs):

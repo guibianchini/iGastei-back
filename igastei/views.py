@@ -22,10 +22,7 @@ class Index(View):
         if not request.user.is_authenticated:
             return render(request, 'index.html', contexto)
         else:
-            # return HttpResponse('Usuário já está autenticado!')
-            # return render(request, 'veiculos.html', contexto)
             return render(request, 'index.html', contexto)
-            # return redirect("/veiculo")
 
 class CustomTokenObtainPairView(APIView):
     def post(self, request):
@@ -36,8 +33,6 @@ class CustomTokenObtainPairView(APIView):
         if user:
             refresh = RefreshToken.for_user(user)
             token = AccessToken.for_user(user)
-            print(refresh)
-            print(token)
             return Response({
                 'refresh': str(refresh),
                 'token': str(token),
