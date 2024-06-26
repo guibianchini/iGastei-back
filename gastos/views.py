@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from gastos.models import Gasto
-from gastos.serializers import SerializadorGasto, SerializadorGerenciaGasto
+from django.db.models import Sum
+from gastos.serializers import SerializadorGasto, SerializadorGerenciaGasto, GastoBancoSerializer
+from gastos.consts import OPCOES_BANCOS
 from rest_framework.generics import ListAPIView, DestroyAPIView, CreateAPIView, UpdateAPIView
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -14,7 +16,44 @@ class APIListarGastos(ListAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Gasto.objects.filter(usuario=self.request.user)
+        queryset = Gasto.objects.filter(usuario=self.request.user)
+        quitada_param = self.request.query_params.get('quitada')
+
+        if quitada_param is not None:
+            quitada = quitada_param.lower() == 'true'  # Converte para booleano
+            queryset = [gasto for gasto in queryset if gasto.quitada == quitada]
+
+        return queryset
+    
+class APIListarPorBancos(ListAPIView):
+    serializer_class = GastoBancoSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+            queryset = Gasto.objects.filter(usuario=self.request.user)
+
+            # Filtrar e agrupar localmente apenas os gastos quitados
+            gastos_quitados = [gasto for gasto in queryset if not(gasto.quitada)]
+
+            # Agrupar os resultados quitados pelo campo banco e obter a soma de valor_total
+            queryset_agrupado = {}
+            for gasto in gastos_quitados:
+                banco_nome = next((nome for id, nome in OPCOES_BANCOS if id == gasto.banco), 'Desconhecido')
+
+                if gasto.banco not in queryset_agrupado:
+                    queryset_agrupado[gasto.banco] = {
+                        'banco': gasto.banco,
+                        'banco_nome': banco_nome,
+                        'total_valor': gasto.valor_parcela_atual if gasto.valor_parcela_atual else 0,
+                    }
+                else:
+                    queryset_agrupado[gasto.banco]['total_valor'] +=  gasto.valor_parcela_atual if gasto.valor_parcela_atual else 0
+
+            # Converter o dicionário em uma lista para manter o formato do queryset
+            queryset_final = list(queryset_agrupado.values())
+
+            return queryset_final
 
 class APICriarGasto(CreateAPIView):
     queryset = Gasto.objects.all()

@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from rest_framework import serializers
 from gastos.models import Gasto
+from gastos.consts import OPCOES_BANCOS, OPCOES_TIPO_COMPRA, OPCOES_CATEGORIAS
+
 
 class SerializadorGasto(serializers.ModelSerializer):
     """ 
@@ -28,3 +30,8 @@ class SerializadorGerenciaGasto(serializers.ModelSerializer):
         extra_kwargs = {
             'usuario': {'required': False}
         }
+
+class GastoBancoSerializer(serializers.Serializer):
+    banco_nome = serializers.CharField()
+    banco = serializers.IntegerField()
+    total_valor = serializers.DecimalField(max_digits=10, decimal_places=2)
