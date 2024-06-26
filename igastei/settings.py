@@ -37,9 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrap5',
+    'gastos.apps.GastosConfig',
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
+    'djmoney',
 ]
 
 MIDDLEWARE = [
