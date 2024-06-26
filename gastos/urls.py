@@ -1,6 +1,6 @@
 from django.urls import path
-from gastos.views import APIListarVeiculos
+from gastos.views import APIListarGastos
 
 urlpatterns = [
-    path('api/', APIListarVeiculos.as_view(), name='api-listar-veiculos')
+    path('api/', APIListarGastos.as_view(), name='api-listar-gastos')
 ]

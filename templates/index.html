@@ -1,11 +1,7 @@
-{% extends 'base.html' %} {% block titulo %}Lista de veículos{% endblock %} {% block conteudo %}
+Lista de veículos
 <div class="container px-5 d-flex flex-column gap-4">
   <div class="d-flex flex-column mb-4">
     <h1 class="text-info fw-bolder">Tô na Garagem</h1>
     <h5 class="text-muted">Os melhores carros seminovos do Tocantins</h5>
   </div>
-  {% if mensagem %}
-  <div class="alert alert-danger" role="alert">{{ mensagem }}</div>
-  {% endif %}
 </div>
-{% endblock %}

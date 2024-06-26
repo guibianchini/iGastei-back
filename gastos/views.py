@@ -6,7 +6,7 @@ from rest_framework.generics import ListAPIView
 from rest_framework.authentication import TokenAuthentication
 from rest_framework import permissions
 
-class APIListarVeiculos(ListAPIView):
+class APIListarGastos(ListAPIView):
 
     serializer_class = SerializadorGasto
     authentication_classes = [TokenAuthentication]
