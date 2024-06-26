@@ -11,7 +11,7 @@ OPCOES_BANCOS = (
 )
 
 OPCOES_TIPO_COMPRA = (
-    (1, u'Á vista'),
+    (1, u'À vista'),
     (2, u'Parcelada'),
     (3, u'Assinatura'),
 )

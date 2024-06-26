@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'bootstrap5',
     'gastos.apps.GastosConfig',
     'rest_framework',
+    'rest_framework_simplejwt',
     'rest_framework.authtoken',
     'corsheaders',
     'djmoney',
@@ -56,10 +57,15 @@ MIDDLEWARE = [
 ]
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-    ]
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+     'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
 }
 
 ROOT_URLCONF = 'igastei.urls'
@@ -145,3 +151,21 @@ CORS_ALLOW_ALL_ORIGINS = True
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:8100',
 )
+
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "sistema": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False
+        },
+    }
+}
