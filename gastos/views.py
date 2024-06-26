@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from gastos.models import Gasto
-from gastos.serializers import SerializadorGasto, SerializadorCadastroGasto
+from gastos.serializers import SerializadorGasto, SerializadorGerenciaGasto
 from rest_framework.generics import ListAPIView, DestroyAPIView, CreateAPIView, UpdateAPIView
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -20,7 +20,7 @@ class APICriarGasto(CreateAPIView):
     queryset = Gasto.objects.all()
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
-    serializer_class = SerializadorCadastroGasto
+    serializer_class = SerializadorGerenciaGasto
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -43,7 +43,7 @@ class APIEditarGasto(UpdateAPIView):
     queryset = Gasto.objects.all()
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
-    serializer_class = SerializadorGasto
+    serializer_class = SerializadorGerenciaGasto
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)

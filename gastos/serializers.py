@@ -18,7 +18,7 @@ class SerializadorGasto(serializers.ModelSerializer):
         fields = '__all__'
         exclude = []
 
-class SerializadorCadastroGasto(serializers.ModelSerializer):
+class SerializadorGerenciaGasto(serializers.ModelSerializer):
     """ 
     Serializador para o objeto Gasto
     """
